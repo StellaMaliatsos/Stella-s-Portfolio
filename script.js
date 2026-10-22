@@ -1,15 +1,18 @@
-// Rotating tagline
-const phrases = ["0 → 1 products", "AI-first workflows", "product-led growth", "for regulated domains"];
-let phraseIndex = 0;
-const rotator = document.getElementById("rotator");
-setInterval(() => {
-  phraseIndex = (phraseIndex + 1) % phrases.length;
-  rotator.classList.add("is-out");
-  setTimeout(() => {
-    rotator.textContent = phrases[phraseIndex];
-    rotator.classList.remove("is-out");
-  }, 300);
-}, 2600);
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Book a call: the button opens the Google Calendar booking page in a pop-up, loaded only on first click
+const booking = document.getElementById("booking");
+const bookingFrame = document.getElementById("bookingFrame");
+document.getElementById("bookCall").addEventListener("click", (e) => {
+  if (!booking.showModal) return; // very old browsers: follow the link to the booking page instead
+  e.preventDefault();
+  if (!bookingFrame.firstChild) {
+    bookingFrame.innerHTML = `<iframe src="${BOOKING_URL}" title="Book a 20-minute call with Stella"></iframe>`;
+  }
+  booking.showModal();
+});
+document.getElementById("bookingClose").addEventListener("click", () => booking.close());
+booking.addEventListener("click", (e) => { if (e.target === booking) booking.close(); });
 
 // Count-up stats when they scroll into view
 function countUp(el) {
@@ -38,39 +41,17 @@ const statObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 document.querySelectorAll(".stat__num").forEach((el) => statObserver.observe(el));
 
-// Case study filters and cards
-const filtersEl = document.getElementById("filters");
+// Selected Work: a list of big project titles; hovering shows the headline number
 const cardsEl = document.getElementById("cards");
-const allTags = ["All", ...new Set(PROJECTS.flatMap((p) => p.tags))];
-
-function renderFilters(active) {
-  filtersEl.innerHTML = allTags
-    .map((tag) => `<button class="filter${tag === active ? " is-active" : ""}" data-tag="${tag}">${tag}</button>`)
-    .join("");
-}
-
-function renderCards(active) {
-  const list = active === "All" ? PROJECTS : PROJECTS.filter((p) => p.tags.includes(active));
-  cardsEl.innerHTML = list
-    .map((p) => `
-      <button class="card" data-id="${p.id}">
-        <span class="card__company">${p.company}</span>
-        <span class="card__title">${p.title}</span>
-        <span class="card__metric">${p.metrics[0][0]} <small>${p.metrics[0][1]}</small></span>
-        <span class="card__tags">${p.tags.map((t) => `<span>${t}</span>`).join("")}</span>
-      </button>`)
-    .join("");
-}
-
-filtersEl.addEventListener("click", (e) => {
-  const btn = e.target.closest(".filter");
-  if (!btn) return;
-  renderFilters(btn.dataset.tag);
-  renderCards(btn.dataset.tag);
-});
-
-renderFilters("All");
-renderCards("All");
+cardsEl.innerHTML = PROJECTS
+  .map((p) => `
+    <li>
+      <button class="work" data-id="${p.id}">
+        <span class="work__title">${p.company}</span>
+        <span class="work__peek">${p.metrics[0][0]} <em>${p.metrics[0][1]}</em></span>
+      </button>
+    </li>`)
+  .join("");
 
 // Case study modal
 const modal = document.getElementById("modal");
@@ -81,6 +62,7 @@ function openProject(id) {
   modalBody.innerHTML = `
     <p class="eyebrow">${p.company} · ${p.context}</p>
     <h3 class="modal__title">${p.title}</h3>
+    ${p.phone ? `<div class="modal__phone">${document.querySelector(".phone-wrap").outerHTML}</div>` : ""}
     <div class="modal__metrics">
       ${p.metrics.map(([n, l]) => `<div><strong>${n}</strong><span>${l}</span></div>`).join("")}
     </div>
@@ -90,45 +72,44 @@ function openProject(id) {
       <div><h4>What I did</h4><ul>${p.approach.map((a) => `<li>${a}</li>`).join("")}</ul></div>
       <div><h4>Outcome</h4><p>${p.outcome}</p></div>
     </div>
-    ${p.link ? `<a class="btn btn--primary modal__link" href="${p.link[1]}" target="_blank" rel="noopener">${p.link[0]} ↗</a>` : ""}`;
+    ${p.link ? `<a class="modal__link" href="${p.link[1]}" target="_blank" rel="noopener">${p.link[0]} ↗</a>` : ""}`;
   modal.showModal();
 }
 
 cardsEl.addEventListener("click", (e) => {
-  const card = e.target.closest(".card");
-  if (card) openProject(card.dataset.id);
+  const item = e.target.closest(".work");
+  if (item) openProject(item.dataset.id);
 });
 document.getElementById("modalClose").addEventListener("click", () => modal.close());
 modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
 
-// Timeline accordion
+// Experience: role and years small on the left, company large on the right; click to expand
 const timelineEl = document.getElementById("timeline");
 timelineEl.innerHTML = TIMELINE
   .map((t, i) => `
-    <li class="tl${i === 0 ? " is-open" : ""}">
-      <button class="tl__head" aria-expanded="${i === 0}">
-        <span class="tl__period">${t.period}</span>
-        <span class="tl__role"><strong>${t.company}</strong> · ${t.role}</span>
-        ${t.points.length ? '<span class="tl__toggle">+</span>' : ""}
+    <li class="tl">
+      <button class="tl__head" aria-expanded="false"${t.points.length ? "" : " disabled"}>
+        <span class="tl__num">${String(i + 1).padStart(2, "0")}</span>
+        <span class="tl__company">${t.company}</span>
+        <span class="tl__meta">${t.role}<br>${t.period}</span>
+        <span class="tl__toggle" aria-hidden="true">${t.points.length ? "+" : ""}</span>
       </button>
-      ${t.points.length ? `<ul class="tl__body">${t.points.map((pt) => `<li>${pt}</li>`).join("")}</ul>` : ""}
+      ${t.points.length ? `<div class="tl__body">
+        ${t.intro ? `<p class="tl__intro">${t.intro}</p>` : ""}
+        <ul class="tl__list">${t.points.map((pt) => typeof pt === "string"
+          ? `<li class="tl__bullet">${pt}</li>`
+          : `<li class="tl__client">
+              <span class="tl__clientTitle">${pt.title}</span>
+              <span class="tl__clientDate">${pt.period}</span>
+              <p>${pt.text}</p>
+            </li>`).join("")}</ul>
+      </div>` : ""}
     </li>`)
   .join("");
 
 timelineEl.addEventListener("click", (e) => {
   const head = e.target.closest(".tl__head");
-  if (!head) return;
-  const item = head.parentElement;
-  const open = item.classList.toggle("is-open");
+  if (!head || head.disabled) return;
+  const open = head.parentElement.classList.toggle("is-open");
   head.setAttribute("aria-expanded", open);
 });
-
-// Fade sections in on scroll
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) entry.target.classList.add("is-visible");
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll(".section").forEach((s) => revealObserver.observe(s));
-
-document.getElementById("year").textContent = new Date().getFullYear();
