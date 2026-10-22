@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stella Maliatsos · AI Product Manager</title>
+  <meta name="description" content="Senior AI Product Manager. 0→1 products and product-led growth in healthcare, fintech and mobility.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="nav">
+    <a href="#top" class="nav__logo">SM</a>
+    <nav class="nav__links">
+      <a href="#impact">Impact</a>
+      <a href="#work">Case studies</a>
+      <a href="#journey">Journey</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="nav__cta">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__text">
+        <p class="eyebrow">Senior AI Product Manager</p>
+        <h1 class="hero__name">STELLA<br>MALIATSOS</h1>
+        <p class="hero__tagline">I build <span class="rotator" id="rotator">0 → 1 products</span></p>
+        <p class="hero__lede">6+ years owning products end to end, from discovery to launch, in regulated, high-stakes domains: healthcare, fintech and mobility.</p>
+        <div class="hero__actions">
+          <a href="#work" class="btn btn--primary">See my work</a>
+          <a href="assets/CV_Stella_Maliatsos.pdf" class="btn btn--ghost" download>Download CV</a>
+        </div>
+      </div>
+      <div class="hero__photo">
+        <img src="assets/stella.jpeg" alt="Portrait of Stella Maliatsos">
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section id="impact" class="section">
+      <h2 class="section__title"><span>Impact in numbers</span></h2>
+      <div class="stats">
+        <div class="stat"><span class="stat__num" data-count="52">0</span><span class="stat__label">hospitals in the healthcare pilot I owned</span></div>
+        <div class="stat"><span class="stat__num" data-count="2.4" data-prefix="+" data-suffix="pp" data-decimals="1">0</span><span class="stat__label">KYC conversion in validated business case</span></div>
+        <div class="stat"><span class="stat__num" data-count="135" data-prefix="€" data-suffix="K">0</span><span class="stat__label">monthly savings potential identified</span></div>
+        <div class="stat"><span class="stat__num" data-count="18" data-prefix="−" data-suffix="%">0</span><span class="stat__label">verification retries across 4 EU markets</span></div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES -->
+    <section id="work" class="section">
+      <h2 class="section__title"><span>Case studies</span></h2>
+      <p class="section__intro">Click a project to see the problem, what I did and the outcome.</p>
+      <div class="filters" id="filters" role="tablist"></div>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <!-- JOURNEY -->
+    <section id="journey" class="section section--tint">
+      <h2 class="section__title"><span>Journey</span></h2>
+      <p class="section__intro">Click a role to expand it.</p>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2 class="section__title"><span>About me</span></h2>
+      <div class="about">
+        <div class="about__text">
+          <p>Every company I've worked with has two versions of how work gets done: the one in the process documents, and the real one, full of workarounds, exceptions and knowledge that only lives in people's heads. I build products for the second one.</p>
+          <p>I love hearing one customer's noise and finding the primitive that scales for everyone. I've done that in hospitals, neobanks and mobility platforms, turning regulation and expert input into roadmaps engineers can build.</p>
+          <p>AI runs through how I work, from LLM-assisted discovery synthesis to rapid prototyping with Claude Code and Lovable.</p>
+          <div class="langs">
+            <span>English</span><span>German</span><span>Greek</span><span>Spanish</span>
+          </div>
+        </div>
+        <div class="about__side">
+          <h3>Core strengths</h3>
+          <ul class="chips">
+            <li>AI Product Management &amp; No-Code Prototyping</li>
+            <li>Data-Driven Decisions &amp; Experimentation</li>
+            <li>User Research &amp; Design Thinking</li>
+            <li>Product-Led Growth &amp; Innovation Strategy</li>
+            <li>Cross-Functional Leadership</li>
+            <li>0 → 1 Product Ownership &amp; Discovery</li>
+            <li>Roadmaps &amp; Backlog Prioritisation</li>
+          </ul>
+          <h3>Education</h3>
+          <ul class="edu">
+            <li><strong>ELISAVA School of Design &amp; Engineering</strong><span>AI Product Manager Sprint · 2024–25</span></li>
+            <li><strong>EADA Business School</strong><span>M.Sc. Sustainable Business and Innovation · 2020–21</span></li>
+            <li><strong>Universitat de Vic</strong><span>M.Sc. International Business Management · 2020–21</span></li>
+            <li><strong>Excellence University Hamburg</strong><span>B.Sc. International Management and Marketing · 2015–19</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact">
+      <h2 class="contact__title">Let's build something worth using.</h2>
+      <p>Open to Senior and Founding AI Product Manager roles.</p>
+      <div class="hero__actions hero__actions--center">
+        <a href="mailto:maria.maliatsos@gmail.com" class="btn btn--primary">Email me</a>
+        <a href="https://www.linkedin.com/in/maria-stella-maliatsos/"class="btn btn--ghost" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="assets/CV_Stella_Maliatsos.pdf" class="btn btn--ghost" download>Download CV</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">© <span id="year"></span> Stella Maliatsos</footer>
+
+  <!-- Case study modal -->
+  <dialog class="modal" id="modal">
+    <button class="modal__close" id="modalClose" aria-label="Close">×</button>
+    <div id="modalBody"></div>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
